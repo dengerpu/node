@@ -17,7 +17,7 @@ let iv="tbcdey1234567890"
 let data = "dep"
 
 let cryted = encrypt(key,iv,data)
-console.log("加密结果-",cryted)
+console.log("加密结果-",cryted) // 加密结果- 7707ec8adfd4c15fddc8d25e7e8b7006
 
 let decrypted = decrypt(key,iv,cryted)
-console.log("解密结果-",decrypted)
+console.log("解密结果-",decrypted) // 解密结果- dep
