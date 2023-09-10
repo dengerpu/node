@@ -3,6 +3,11 @@ const apiRoutes = require('./route2/apiRoute')
 const indexRoutes = require('./route/IndexRoute')
 
 const app = express()
+
+//静态资源管理
+app.use(express.static('public'))
+app.use(express.static('static'))
+
 app.use(express.urlencoded({extended:false})) // (Content-Type: application/x-www-form-urlencoded)post参数- username=kerwin&password=1234
 app.use(express.json()) // post参数- {name:"",age:100}
 

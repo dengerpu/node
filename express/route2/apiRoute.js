@@ -21,6 +21,36 @@ router.post('/login', (req, res) => {
     res.send(req.body)
 })
 
+router.get('/getlogin', (req, res) => {
+    const {username, password} = req.query
+    if(username == 'dep' && password == '123456') {
+        res.send({
+            code: 1,
+            success: true
+        })
+    } else {
+        res.send({
+            code: 0,
+            success: false
+        })
+    }
+})
+
+router.post('/postlogin', (req, res) => {
+    const {username, password} = req.body
+    if(username == "dep" && password == '123456') {
+        res.send({
+            code: 1,
+            success: true
+        })
+    } else {
+        res.send({
+            code: 0,
+            success: false
+        })
+    }
+})
+
 // 一个中间件栈，显示任何指向 /user/:id 的 HTTP 请求的信息
 router.use('/user/:id', function (req, res, next) {
     console.log('Request URL:', req.originalUrl)
