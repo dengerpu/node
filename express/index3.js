@@ -3,6 +3,8 @@ const apiRoutes = require('./route2/apiRoute')
 const indexRoutes = require('./route/IndexRoute')
 
 const app = express()
+app.use(express.urlencoded({extended:false})) // (Content-Type: application/x-www-form-urlencoded)post参数- username=kerwin&password=1234
+app.use(express.json()) // post参数- {name:"",age:100}
 
 
 // 在这上面的请求不受这个中间件影响

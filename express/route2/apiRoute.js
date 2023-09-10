@@ -13,7 +13,12 @@ router.get('/home', (req, res) => {
 })
 
 router.get('/login', (req, res) => {
-    res.send('/api/login')
+    console.log(req.query)
+    res.send(req.query)
+})
+router.post('/login', (req, res) => {
+    console.log(req.body)
+    res.send(req.body)
 })
 
 // 一个中间件栈，显示任何指向 /user/:id 的 HTTP 请求的信息
@@ -25,7 +30,7 @@ router.use('/user/:id', function (req, res, next) {
     next()
 })
 
-// 一个中间件栈，处理指向 /user/:id 的 GET 请求
+// 一个中间件栈，处理指向 /api/user/:id 的 GET 请求
 router.get('/user/:id', function (req, res, next) {
     // 如果 user id 为 0, 跳到下一个路由
     if (req.params.id == 0) next('route')
@@ -36,7 +41,7 @@ router.get('/user/:id', function (req, res, next) {
     res.render('regular')
 })
 
-// 处理 /user/:id， 渲染一个特殊页面
+// 处理 /api/user/:id， 渲染一个特殊页面
 router.get('/user/:id', function (req, res, next) {
     console.log(req.params.id)
     res.render('special')
