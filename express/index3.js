@@ -4,9 +4,13 @@ const indexRoutes = require('./route/IndexRoute')
 
 const app = express()
 
-//静态资源管理
+// 静态资源管理
 app.use(express.static('public'))
 app.use(express.static('static'))
+
+// 模版引擎管理
+app.set('views', './views')
+app.set('view engine', 'ejs')
 
 app.use(express.urlencoded({extended:false})) // (Content-Type: application/x-www-form-urlencoded)post参数- username=kerwin&password=1234
 app.use(express.json()) // post参数- {name:"",age:100}
