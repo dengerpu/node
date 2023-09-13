@@ -1,4 +1,4 @@
-const UserService = require("../services/UserService")
+const UserService = require("../service/UserService")
 
 const UserController = {
     // 添加用户
