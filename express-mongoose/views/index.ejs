@@ -107,7 +107,9 @@
         if(event.target.classList.contains("delete")) {
           const pNode = event.target.parentNode.parentNode;
           const id = pNode.querySelector('.id').innerText
-          fetch(`http://localhost:3000/api/user/delete/${id}`)
+          fetch(`http://localhost:3000/api/user/delete/${id}`, {
+            method: 'DELETE'
+          })
           .then(res => res.json())
           .then(res => {
             if(res.code) {
@@ -123,7 +125,7 @@
       // 修改数据
       editButton.onclick = function() {
         fetch(`http://localhost:3000/api/user/edit/${_id.value}`, {
-          method: 'POST',
+          method: 'PUT',
           body: JSON.stringify({
             username: username.value,
             age: age.value,

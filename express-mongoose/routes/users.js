@@ -44,7 +44,7 @@ router.post('/add', function(req, res, next) {
   })
 });
 
-router.post('/edit/:id', function(req, res, next) {
+router.put('/edit/:id', function(req, res, next) {
   const {username, age} = req.body
   UserModel.updateOne({_id: req.params.id}, {
     username, age
@@ -63,7 +63,7 @@ router.post('/edit/:id', function(req, res, next) {
   })
 });
 
-router.get('/delete/:id', (req, res) => {
+router.delete('/delete/:id', (req, res) => {
   UserModel.deleteOne({
     _id: req.params.id
   }).then(data => {
