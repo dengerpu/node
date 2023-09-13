@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <style>
+    .edit {
+      background-color: bisque;
+    }
+    .delete {
+      background-color: red;
+    }
+  </style>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+  <div>
+    <label name="id">id<input name="id" id="_id" type="hidden"></label><br />
+    <label name="username">账号：<input name="username" id="username" type="text"></label><br />
+    <label name="password">密码：<input name="password" id="password" type="password"></label><br />
+    <label name="age">年龄：<input name="age" id="age" type="text"></label><br />
+    <input id="addButton" type="submit" value="添加"></input>
+    <input id="editButton" type="submit" value="确定修改"></input>
+    <input id="deleteButton" type="submit" value="清空"></input>
+  </div>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th colspan="2">操作</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+
+    </tbody>
+  </table>
+
+  <script>
+    const _id = document.querySelector('#_id')
+    const username = document.querySelector('#username')
+    const password = document.querySelector('#password')
+    const age = document.querySelector('#age')
+    const addButton = document.querySelector('#addButton')
+    const tbody = document.querySelector('#tbody')
+    const deleteButton = document.querySelector('#deleteButton')
+    addButton.onclick = function () {
+      fetch('http://localhost:3000/api/user/add', {
+        method: 'POST',
+        body: JSON.stringify({
+          username: username.value,
+          password: password.value,
+          age: age.value,
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json()).then(data => {
+        console.log(data)
+        getTableData()
+      })
+    }
+
+    getTableData()
+    // 获取表格数据
+    function getTableData() {
+      fetch('http://localhost:3000/api/user/list?page=1&limit=6')
+      .then(res => res.json())
+      .then(res => {
+        if (res.code) {
+          console.log(res)
+          tbody.innerHTML = res.data.map(item => {
+            return `
+                <tr>
+                  <td class="id">${item._id}</td>  
+                  <td class="username">${item.username}</td>  
+                  <td class="age">${item.age}</td>
+                  <td><button class="edit">修改</button></td>
+                  <td><button class="delete">删除</button></td>  
+                </tr>
+                `
+          }).join("")
+        } else {
+          tbody.innerHTML = `
+                <tr>
+                  <td colspan="5">暂无数据</td>  
+                </tr>
+              `
+        }
+      })
+    }
+
+      // 事件委托方式给每个按钮添加点击事件
+      tbody.addEventListener('click', function(event) {
+        if(event.target.classList.contains("edit")) {
+          const pNode = event.target.parentNode.parentNode;
+          // console.log(pNode)
+          // console.log(pNode.querySelector('.id'))
+          username.value = pNode.querySelector('.username').innerText
+          age.value = pNode.querySelector('.age').innerText
+          _id.value = pNode.querySelector('.id').innerText
+        }
+        if(event.target.classList.contains("delete")) {
+          const pNode = event.target.parentNode.parentNode;
+          const id = pNode.querySelector('.id').innerText
+          fetch(`http://localhost:3000/api/user/delete/${id}`, {
+            method: 'DELETE'
+          })
+          .then(res => res.json())
+          .then(res => {
+            if(res.code) {
+              alert('删除成功')
+              getTableData()
+            } else {
+              alert('删除失败')
+            }
+          })
+        }
+      })
+
+      // 修改数据
+      editButton.onclick = function() {
+        fetch(`http://localhost:3000/api/user/edit/${_id.value}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            username: username.value,
+            age: age.value,
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(res => res.json()).then(res => {
+          if(res.code) {
+              alert('修改成功')
+              getTableData()
+            } else {
+              alert('修改失败')
+            }
+        })
+      }
+
+      // 清空表格数据
+      deleteButton.onclick = function() {
+        username.value = ''
+        password.value = ''
+        age.value = ''
+      }
+  </script>
+</body>
+
+</html>
