@@ -1,6 +1,27 @@
 const UserService = require("../service/UserService")
 
 const UserController = {
+    // 登陆
+    login: (req, res) => {
+      const {username, password} = req.body
+      UserService.login(username, password).then(data => {
+        console.log(data)
+        //设置session {}  
+
+        req.session.user = data //设置session对象， 
+        //默认存在内存中。
+        res.send({
+          code: 1,
+          msg: '登陆成功'
+        })
+      }).catch(err => {
+        console.log(err)
+        res.send({
+          code: 0,
+          msg: '账号或者密码错误'
+        })
+      })
+    },
     // 添加用户
     addUser: (req, res) => {
         const {username, password, age} = req.body

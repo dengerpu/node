@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <style>
+  </style>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <h1>xxx后台管理系统</h1>
+  <div>
+    <label name="username">账号：<input name="username" id="username" type="text"></label><br />
+    <label name="password">密码：<input name="password" id="password" type="password"></label><br />
+    <input id="loginButton" type="submit" value="登陆"></input>
+  </div>
+
+  <script>
+    const username = document.querySelector('#username')
+    const password = document.querySelector('#password')
+    const loginButton = document.querySelector('#loginButton')
+    loginButton.onclick = function () {
+      fetch('http://localhost:3000/api/user/login', {
+        method: 'POST',
+        body: JSON.stringify({
+          username: username.value,
+          password: password.value
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json()).then(data => {
+        console.log('登陆', data)
+        if(data.code) {
+            location.href="/"
+            alert(data.msg)
+        } else {
+            alert(data.msg)
+        }
+      })
+    }
+  </script>
+</body>
+
+</html>

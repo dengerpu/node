@@ -1,6 +1,10 @@
 const UserModel = require('../model/UserModel')
 
 const UserService = {
+    // 登陆
+    login: (username, password) => {
+        return UserModel.findOne({username, password})
+    },
     // 添加用户
     addUser: (username, password, age) => {
         return UserModel.create({

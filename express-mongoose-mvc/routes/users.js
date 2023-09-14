@@ -16,6 +16,8 @@ router.post('/add', UserController.addUser);
 router.put('/edit/:id', UserController.editUser);
 // 删除用户
 router.delete('/delete/:id', UserController.deleteUser)
+// 用户登录
+router.post('/login', UserController.login)
 
 
 module.exports = router;
