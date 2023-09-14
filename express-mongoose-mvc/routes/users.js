@@ -18,6 +18,8 @@ router.put('/edit/:id', UserController.editUser);
 router.delete('/delete/:id', UserController.deleteUser)
 // 用户登录
 router.post('/login', UserController.login)
+// 退出登陆
+router.get('/logout', UserController.logout)
 
 
 module.exports = router;

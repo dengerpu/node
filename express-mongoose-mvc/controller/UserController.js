@@ -6,19 +6,35 @@ const UserController = {
       const {username, password} = req.body
       UserService.login(username, password).then(data => {
         console.log(data)
-        //设置session {}  
+        if(data) {
+          //设置session {}
+          req.session.user = data //设置session对象， 
+          //默认存在内存中。
+          res.send({
+            code: 1,
+            msg: '登陆成功'
+          })
+        } else {
+          res.send({
+            code: 0,
+            msg: '账号或者密码错误或账号不存在'
+          })
+        }
 
-        req.session.user = data //设置session对象， 
-        //默认存在内存中。
-        res.send({
-          code: 1,
-          msg: '登陆成功'
-        })
       }).catch(err => {
         console.log(err)
         res.send({
           code: 0,
           msg: '账号或者密码错误'
+        })
+      })
+    },
+    // 退出登陆
+    logout: (req, res) => {
+      req.session.destroy(()=>{
+        res.send({
+          code: 1,
+          msg: "退出成功"
         })
       })
     },

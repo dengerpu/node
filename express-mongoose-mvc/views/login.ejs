@@ -34,7 +34,7 @@
         }
       }).then(res => res.json()).then(data => {
         console.log('登陆', data)
-        if(data.code) {
+        if(data.code == 1) {
             location.href="/"
             alert(data.msg)
         } else {

@@ -17,6 +17,7 @@
 </head>
 
 <body>
+  <button id="exit">退出登陆</button>
   <div>
     <label name="id">id<input name="id" id="_id" type="hidden"></label><br />
     <label name="username">账号：<input name="username" id="username" type="text"></label><br />
@@ -48,6 +49,7 @@
     const addButton = document.querySelector('#addButton')
     const tbody = document.querySelector('#tbody')
     const deleteButton = document.querySelector('#deleteButton')
+    const exit = document.querySelector('#exit')
     addButton.onclick = function () {
       fetch('http://localhost:3000/api/user/add', {
         method: 'POST',
@@ -64,6 +66,18 @@
         getTableData()
         if (res.code == 3) {
               window.location.href = "/login"
+        }
+      })
+    }
+
+    // 退出
+    exit.onclick = function() {
+      fetch("http://localhost:3000/api/user/logout").then(res => res.json())
+      .then(res => {
+        if(res.code) {
+          location.href="/login"
+        } else {
+          alert("退出登陆失败")
         }
       })
     }
