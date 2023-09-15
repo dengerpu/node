@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <style>
+  </style>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    // 拦截器
+            //拦截器，
+            axios.interceptors.request.use(function (config) {
+            // console.log("请求发出前，执行的方法")
+            // Do something before request is sent
+            return config;
+        }, function (error) {
+            // Do something with request error
+            return Promise.reject(error);
+        });
+
+        // Add a response interceptor
+        axios.interceptors.response.use(function (response) {
+            // console.log("请求成功后 ，第一个调用的方法")
+            const {authorization } = response.headers
+            authorization && localStorage.setItem("token",authorization)
+            return response;
+        }, function (error) {
+            // Any status codes that falls outside the range of 2xx cause this function to trigger
+            // Do something with response error
+            return Promise.reject(error);
+        });
+  </script>
+</head>
+
+<body>
+    <h1>xxx后台管理系统</h1>
+  <div>
+    <label name="username">账号：<input name="username" id="username" type="text"></label><br />
+    <label name="password">密码：<input name="password" id="password" type="password"></label><br />
+    <input id="loginButton" type="submit" value="登陆"></input>
+  </div>
+
+  <script>
+    const username = document.querySelector('#username')
+    const password = document.querySelector('#password')
+    const loginButton = document.querySelector('#loginButton')
+    loginButton.onclick = function () {
+      axios.post("/api/user/login",{
+        username: username.value,
+        password: password.value
+      }).then(res => {
+        console.log('登陆', res.data)
+        if(res.data.code == 1) {
+            location.href="/"
+            alert(res.data.msg)
+        } else {
+            alert(res.data.msg)
+        }
+      })
+    }
+  </script>
+</body>
+
+</html>
