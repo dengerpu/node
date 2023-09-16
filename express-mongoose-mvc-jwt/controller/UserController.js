@@ -45,8 +45,10 @@ const UserController = {
     // },
     // 添加用户
     addUser: (req, res) => {
+        console.log(req.file)
+        const avatar = req.file?`/uploads/${req.file.filename}`:`/images/default.png`
         const {username, password, age} = req.body
-        UserService.addUser(username, password, age).then(data => {
+        UserService.addUser(username, password, age, avatar).then(data => {
           console.log(data)
           res.send({
             code: 1,

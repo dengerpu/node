@@ -3,6 +3,10 @@ var router = express.Router();
 const UserModel = require('../model/UserModel')
 const UserController = require('../controller/UserController')
 
+// 上传文件
+const multer  = require('multer')
+const upload = multer({ dest: 'public/uploads/' })
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -11,7 +15,7 @@ router.get('/', function(req, res, next) {
 // 获取用户列表
 router.get('/list', UserController.getUserList)
 // 添加用户
-router.post('/add', UserController.addUser);
+router.post('/form/add', upload.single("avator"), UserController.addUser);
 // 修改用户
 router.put('/edit/:id', UserController.editUser);
 // 删除用户

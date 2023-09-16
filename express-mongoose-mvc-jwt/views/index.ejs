@@ -12,6 +12,10 @@
     .delete {
       background-color: red;
     }
+    .img img{
+      width: 80px;
+      height: 80px;
+    }
   </style>
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -54,6 +58,7 @@
     <label name="username">账号：<input name="username" id="username" type="text"></label><br />
     <label name="password">密码：<input name="password" id="password" type="password"></label><br />
     <label name="age">年龄：<input name="age" id="age" type="text"></label><br />
+    <label name="avator">文件：<input id="avator" name="avator" type="file"></label><br />
     <input id="addButton" type="submit" value="添加"></input>
     <input id="editButton" type="submit" value="确定修改"></input>
     <input id="deleteButton" type="submit" value="清空"></input>
@@ -64,6 +69,7 @@
         <th>id</th>
         <th>姓名</th>
         <th>年龄</th>
+        <th>头像</th>
         <th colspan="2">操作</th>
       </tr>
     </thead>
@@ -81,11 +87,18 @@
     const tbody = document.querySelector('#tbody')
     const deleteButton = document.querySelector('#deleteButton')
     const exit = document.querySelector('#exit')
+    const avator = document.querySelector('#avator')
     addButton.onclick = function () {
-      axios.post("/api/user/add", {
-          username: username.value,
-          password: password.value,
-          age: age.value
+      console.log(avator.files[0])
+      const formData = new FormData()
+      formData.append("username",username.value)
+      formData.append("password",password.value)
+      formData.append("age", age.value)
+      formData.append("avator",avator.files[0])
+      axios.post("/api/user/form/add", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
       }).then(res => {
         console.log(res.data)
         getTableData()
@@ -114,6 +127,7 @@
                   <td class="id">${item._id}</td>  
                   <td class="username">${item.username}</td>  
                   <td class="age">${item.age}</td>
+                  <td class="img"><img src="${item.avator}"></img></td>
                   <td><button class="edit">修改</button></td>
                   <td><button class="delete">删除</button></td>  
                 </tr>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    //拦截器，
+    axios.interceptors.request.use(function (config) {
+      // console.log("请求发出前，执行的方法")
+      // Do something before request is sent
+      const token = localStorage.getItem("token")
+      config.headers.Authorization = `Bearer ${token}`
+      return config;
+    }, function (error) {
+      // Do something with request error
+      return Promise.reject(error);
+    });
+
+    // Add a response interceptor
+    axios.interceptors.response.use(function (response) {
+      // console.log("请求成功后 ，第一个调用的方法")
+      const {
+        authorization
+      } = response.headers
+      authorization && localStorage.setItem("token", authorization)
+      return response;
+    }, function (error) {
+      // console.log(error.response.status)
+      if(error.response.status===401){
+        localStorage.removeItem("token")
+        location.href = "/login"
+      }
+      return Promise.reject(error);
+    });
+  </script>
+</head>
+
+<body>
+  <form action="/api/user/form/add" method="post" enctype="multipart/form-data">
+    <label name="username">账号：<input name="username"  type="text"></label><br />
+    <label name="password">密码：<input name="password" type="password"></label><br />
+    <label name="age">年龄：<input name="age" type="text"></label><br />
+    <label name="avator">文件：<input name="avator" type="file"></label><br />
+    <input type="submit" value="添加"></input>
+  </form>
+</body>
+
+</html>

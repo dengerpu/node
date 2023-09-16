@@ -6,10 +6,10 @@ const UserService = {
         return UserModel.findOne({username, password})
     },
     // 添加用户
-    addUser: (username, password, age) => {
+    addUser: (username, password, age, avator) => {
         return UserModel.create({
             // username: username, password: password, age: age
-            username, password, age
+            username, password, age, avator
         })
     },
     // 修改用户
@@ -20,7 +20,7 @@ const UserService = {
     },
     // 获取用户列表
     getUserList: (page, limit) => {
-        return UserModel.find({}, ["username", "age"])
+        return UserModel.find({}, ["username", "age", "avator"])
         .sort({age: -1})
         .skip((page - 1) * limit)
         .limit(limit)
