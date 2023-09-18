@@ -3,6 +3,8 @@ const router = require("./routes/index")
 const path = require("path")
 // 静态资源
 const static = require("koa-static")
+// post参数处理
+const bodyParser = require("koa-bodyparser")
 
 const app = new Koa()
 
@@ -10,6 +12,8 @@ const app = new Koa()
 app.use(static(
     path.join(__dirname, "public")
 ))
+// post参数管理
+app.use(bodyParser())
 
 app.use(router.routes()).use(router.allowedMethods())
 

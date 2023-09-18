@@ -20,6 +20,18 @@ router.get("/", (ctx) => {
         id: ctx.params.id,
         msg: "删除成功"
     }
+}).get("/login", (ctx) => {
+    console.log("get请求参数", ctx.query, ctx.querystring)
+    ctx.body = ctx.query
+}).post("/login", (ctx) => {
+    console.log("post请求参数", ctx.request.body)
+    const {username, password} = ctx.request.body
+    if(username == 'admin' && password == '123456') {
+        ctx.redirect("/")
+    } else {
+        ctx.redirect("/index.html")
+    }
+    ctx.body = ctx.request.body
 })
 
 
