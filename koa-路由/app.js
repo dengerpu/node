@@ -5,6 +5,8 @@ const path = require("path")
 const static = require("koa-static")
 // post参数处理
 const bodyParser = require("koa-bodyparser")
+// 模版引擎
+const views = require("koa-views")
 
 const app = new Koa()
 
@@ -14,6 +16,10 @@ app.use(static(
 ))
 // post参数管理
 app.use(bodyParser())
+// 模版引擎管理
+app.use(views(path.join(__dirname, './views'), {
+    extension: 'ejs'
+}))
 
 app.use(router.routes()).use(router.allowedMethods())
 
