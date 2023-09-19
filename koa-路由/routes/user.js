@@ -27,11 +27,20 @@ router.get("/", (ctx) => {
     console.log("post请求参数", ctx.request.body)
     const {username, password} = ctx.request.body
     if(username == 'admin' && password == '123456') {
-        ctx.redirect("/")
+        //设置sessionId
+        ctx.session.user = {
+            username:"admin"
+        }
+        ctx.body = {
+            code: 1,
+            msg: "登陆成功"
+        }
     } else {
-        ctx.redirect("/index.html")
+        ctx.body = {
+            code: 0,
+            msg: "账号或密码有误"
+        }
     }
-    ctx.body = ctx.request.body
 })
 
 

@@ -11,6 +11,10 @@ const home = require("./home")
 router.use('/api/list', list.routes(), list.allowedMethods())
 router.use('/api/user', user.routes(), user.allowedMethods())
 router.use('/home', home.routes(), home.allowedMethods())
+router.get('/login', async (ctx) => {
+    console.log('访问login页面')
+    await ctx.render('login')
+})
 
 // 路由重定向
 //写法1 
