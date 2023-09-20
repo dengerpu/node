@@ -3,12 +3,42 @@ const app = express()
 
 app.use(express.static("./public"))
 
-// http响应
-app.get("/", (req, res) => {
-    res.send({
-        ok: 1
-    })
-})
+// 模版引擎管理
+app.set('views', './views')
+app.set('view engine', 'ejs')
+
+// 设置中间件，token过期体验
+app.use((req, res, next)=> {
+    // 排除login相关的路由和接口
+    if(req.url.includes("login")) {
+      next()
+      return
+    }
+    // ?.相当于req.headers["authorization"] && req.headers["authorization"].split(" ")[1]
+    const token = req.headers["authorization"]?.split(" ")[1]
+    console.log("获取到的token", token)
+    if(token) {
+      const payload = JWT.verify(token)
+      console.log("解析的token", payload)
+      if(payload) {
+        // 重新计算token过期时间
+        const newToken = JWT.generate({
+          _id: payload._id,
+          username: payload.username
+        }, "1d")
+        res.header("Authorization",newToken)
+        next()
+      } else {
+        res.status(401).send({
+          ok: 3,
+          msg: "登陆过期"
+        })
+      }
+    } else {
+      next()
+    }
+  })
+
 
 app.listen(3000, () => {
     console.log("服务器启动成功")
