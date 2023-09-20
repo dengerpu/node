@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>聊天室</h1>
+    <script>
+        const ws = new WebSocket("ws://localhost:8080");
+
+        ws.onopen = () => {
+            console.log("连接成功")
+            ws.send("客户端发送来的消息")
+        }
+        ws.onmessage = (msgObj) => {
+            console.log(msgObj, msgObj.data)
+        }
+        ws.onerror = () => {
+            console.log("error")
+        }
+        
+    </script>
+</body>
+</html>
