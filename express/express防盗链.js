@@ -2,7 +2,7 @@ const express = require('express')
 
 const app = express()
 
-// 防盗链
+// 防盗链 (要放在静态资源管理的前面)
 app.use((req, res, next) => {
     // 检测请求头中的referer是否为127.0.0.1
     // 获取 referer
